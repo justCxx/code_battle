@@ -1,0 +1,9 @@
+- name: pg_hba_conf
+  template:
+    src: pg_hba.conf.j2
+    dest: /etc/postgresql/{{ pg_version }}/main/pg_hba.conf
+    force: yes
+    backup: yes
+  become: yes
+  notify:
+    - restart postgresql
