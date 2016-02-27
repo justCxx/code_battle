@@ -1,15 +1,15 @@
 (ns code-battle.handler
-  (:require [compojure.core :refer [defroutes routes wrap-routes]]
+  (:require [clojure.tools.logging :as log]
+            [code-battle.config :refer [defaults]]
             [code-battle.layout :refer [error-page]]
-            [code-battle.routes.home :refer [home-routes]]
-            [code-battle.routes.services :refer [service-routes]]
             [code-battle.middleware :as middleware]
-            [clojure.tools.logging :as log]
+            [code-battle.routes.home :refer [auth-routes home-routes]]
+            [code-battle.routes.services :refer [service-routes]]
+            [compojure.core :refer [routes wrap-routes]]
             [compojure.route :as route]
             [config.core :refer [env]]
-            [code-battle.config :refer [defaults]]
-            [mount.core :as mount]
-            [luminus.logger :as logger]))
+            [luminus.logger :as logger]
+            [mount.core :as mount]))
 
 (defn init
   "init will be called once when
@@ -33,11 +33,12 @@
 
 (def app-routes
   (routes
-    #'service-routes
-    (wrap-routes #'home-routes middleware/wrap-csrf)
-    (route/not-found
-      (:body
-        (error-page {:status 404
-                     :title "page not found"})))))
+   #'service-routes
+   #'auth-routes
+   (wrap-routes #'home-routes middleware/wrap-csrf)
+   (route/not-found
+    (:body
+     (error-page {:status 404
+                  :title "page not found"})))))
 
 (def app (middleware/wrap-base #'app-routes))
