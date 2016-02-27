@@ -1,0 +1,10 @@
+- name: install module dependencies
+  apt: name=python-psycopg2 state=present
+  become: yes
+
+- name: create db's
+  postgresql_db: name={{ item }}
+  with_items:
+    - code_battle_dev
+    - code_battle_test
+
