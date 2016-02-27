@@ -36,7 +36,12 @@
                  [metosin/compojure-api "1.0.0"]
                  [org.webjars/webjars-locator-jboss-vfs "0.1.0"]
                  [luminus-immutant "0.1.1"]
-                 [luminus-log4j "0.1.2"]]
+                 [luminus-log4j "0.1.2"]
+                 [org.clojure/core.cache "0.6.4"]
+                 [clj-http "2.1.0"]
+                 [com.cemerick/friend "0.2.1"]
+                 [friend-oauth2 "0.1.3"]
+                 ]
 
   :min-lein-version "2.0.0"
 
@@ -60,7 +65,7 @@
       :output-dir "target/cljsbuild/public/js/out"
       :externs ["react/externs/react.js"]
       :pretty-print true}}}}
-  
+
   :profiles
   {:uberjar {:omit-source true
              :env {:production true}
@@ -73,8 +78,8 @@
                  {:optimizations :advanced
                   :pretty-print false
                   :closure-warnings
-                  {:externs-validation :off :non-standard-jsdoc :off}}}}} 
-             
+                  {:externs-validation :off :non-standard-jsdoc :off}}}}}
+
              :aot :all
              :uberjar-name "code_battle.jar"
              :source-paths ["env/prod/clj"]
@@ -105,8 +110,8 @@
                       {:output-to "target/test.js"
                        :main "code-battle.doo-runner"
                        :optimizations :whitespace
-                       :pretty-print true}}}} 
-                  
+                       :pretty-print true}}}}
+
                   :figwheel
                   {:http-server-root "public"
                    :server-port 3449
